@@ -2,7 +2,6 @@ package com.example.aula1
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandHorizontally
-import androidx.compose.animation.shrinkOut
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -76,7 +74,7 @@ fun OverviewScreen(viewModel: OverviewViewModel = viewModel()) {
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                viewModel.addTransaction(randomTRansaction())
+                viewModel.addTransaction(randomTransaction())
             }) {
                 Row(
                     modifier = Modifier.padding(horizontal = 16.dp),

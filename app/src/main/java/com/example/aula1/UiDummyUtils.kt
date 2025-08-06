@@ -11,7 +11,7 @@ import java.util.Locale
 import kotlin.random.Random
 
 fun Date.formatDate(): String {
-    val dateFormat = SimpleDateFormat("MMM. dd", Locale.getDefault())
+    val dateFormat = SimpleDateFormat("MMM, yy - hh:mm a", Locale.getDefault())
     return dateFormat.format(this)
 }
 
@@ -29,7 +29,7 @@ val categories = listOf(
     "Utilities" to Icons.Default.Face,
 )
 
-fun randomTRansaction() = Transaction(
+fun randomTransaction() = Transaction(
     category = categories.shuffled().first().first,
     value = BigDecimal.valueOf(Random.nextDouble() / Random.nextDouble())
 )
