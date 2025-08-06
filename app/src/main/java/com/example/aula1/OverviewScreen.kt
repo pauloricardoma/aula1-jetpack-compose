@@ -1,0 +1,169 @@
+package com.example.aula1
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.shrinkOut
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.launch
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun OverviewScreen(viewModel: OverviewViewModel = viewModel()) {
+    val listState = rememberLazyListState()
+    val showButton by remember {
+        derivedStateOf {
+            listState.firstVisibleItemIndex > 0
+        }
+    }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                modifier = Modifier.padding(top = 32.dp, bottom = 32.dp),
+                colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background),
+                title = {
+                    Text(
+                        text = "Welcome back, \n Paulo Ricardo!",
+                        style = MaterialTheme.typography.headlineMedium
+                    )
+                },
+                actions = {
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Filled.Clear,
+                            contentDescription = "",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
+                viewModel.addTransaction(randomTRansaction())
+            }) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(imageVector = Icons.Filled.Add, contentDescription = "")
+                    AnimatedVisibility(visible = !showButton) {
+                        Text(
+                            text = "Add Transaction".toUpperCase(),
+                            modifier = Modifier.padding(
+                                start = 8.dp,
+                            )
+                        )
+                    }
+                }
+            }
+        }
+    ) {
+        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+        val scope = rememberCoroutineScope()
+        Column(
+            modifier = Modifier.padding(it)
+        ) {
+            Text(
+                text = "Transactions",
+                modifier = Modifier.padding(
+                    start = 16.dp,
+                    end = 16.dp
+                ),
+            )
+            LazyColumn(
+                modifier = Modifier.padding(
+                    start = 16.dp,
+                    end = 16.dp
+                ),
+                contentPadding = PaddingValues(
+                    top = 16.dp,
+                    bottom = 16.dp
+                ),
+                state = listState
+            ) {
+                items(uiState.transactions) { transaction ->
+                    TransactionCard(
+                        uuid = transaction.uuid,
+                        value = transaction.value,
+                        category = transaction.category,
+                        date = transaction.date.formatDate()
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+            }
+        }
+        AnimatedVisibility(
+            visible = showButton,
+            enter = expandHorizontally(),
+            exit = slideOutHorizontally()
+        ) {
+            Box(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                IconButton(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(vertical = 40.dp)
+                        .background(
+                            MaterialTheme.colorScheme.primary,
+                            MaterialTheme.shapes.extraLarge
+                        ),
+                    onClick = {
+                        scope.launch {
+                            listState.animateScrollToItem(0)
+                        }
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.KeyboardArrowUp,
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                        contentDescription = ""
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun OverviewScreenPreview() {
+    OverviewScreen()
+}

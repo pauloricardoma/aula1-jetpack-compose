@@ -57,94 +57,95 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Aula1Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column {
-                        Welcome(
-                            modifier = Modifier.padding(innerPadding)
-                        )
-                        Transactions()
-                    }
-                }
+                OverviewScreen()
+//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+//                    Column {
+//                        Welcome(
+//                            modifier = Modifier.padding(innerPadding)
+//                        )
+//                        Transactions()
+//                    }
+//                }
             }
         }
     }
 }
 
-@Composable
-fun Transactions(viewModel: MyViewModel = viewModel()) {
-    val uiState by viewModel.uiState.collectAsState()
-
-    Column(
-        modifier = Modifier.padding(16.dp)
-    ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth().weight(1f),
-            contentPadding = PaddingValues(8.dp)
-        ) {
-            items(uiState.transactions.size) { index ->
-                Transaction(uiState.transactions[index])
-            }
-        }
-        Button(
-            onClick = {
-                viewModel.add("New Transaction")
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = "Add new Transaction"
-            )
-        }
-    }
-}
-
-@Composable
-fun Transaction(transaction: String) {
-    Card(
-        elevation = CardDefaults.cardElevation(8.dp),
-        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
-    ) {
-        Row(
-            modifier = Modifier.padding(8.dp)
-        ) {
-            Icon(imageVector = Icons.Filled.Settings, contentDescription = "")
-            Spacer(modifier = Modifier.padding(16.dp))
-            Text(
-                text = transaction,
-                modifier = Modifier.padding(8.dp).fillMaxWidth(),
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.Bold,
-            )
-        }
-    }
-}
-
-@Composable
-fun Welcome(modifier: Modifier = Modifier) {
-    Row(
-        modifier = Modifier.padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = "Welcome back, \n Paulo Ricardo!",
-            style = MaterialTheme.typography.headlineLarge,
-            modifier = Modifier.weight(1f)
-        )
-        Icon(
-            imageVector = Icons.Filled.Delete,
-            contentDescription = "Clear Transactions",
-            tint = MaterialTheme.colorScheme.primary
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Aula1Theme {
-        Column {
-            Welcome()
-            Transactions()
-        }
-    }
-}
+//@Composable
+//fun Transactions(viewModel: MyViewModel = viewModel()) {
+//    val uiState by viewModel.uiState.collectAsState()
+//
+//    Column(
+//        modifier = Modifier.padding(16.dp)
+//    ) {
+//        LazyColumn(
+//            modifier = Modifier.fillMaxWidth().weight(1f),
+//            contentPadding = PaddingValues(8.dp)
+//        ) {
+//            items(uiState.transactions.size) { index ->
+//                Transaction(uiState.transactions[index])
+//            }
+//        }
+//        Button(
+//            onClick = {
+//                viewModel.add("New Transaction")
+//            },
+//            modifier = Modifier.fillMaxWidth()
+//        ) {
+//            Text(
+//                text = "Add new Transaction"
+//            )
+//        }
+//    }
+//}
+//
+//@Composable
+//fun Transaction(transaction: String) {
+//    Card(
+//        elevation = CardDefaults.cardElevation(8.dp),
+//        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+//    ) {
+//        Row(
+//            modifier = Modifier.padding(8.dp)
+//        ) {
+//            Icon(imageVector = Icons.Filled.Settings, contentDescription = "")
+//            Spacer(modifier = Modifier.padding(16.dp))
+//            Text(
+//                text = transaction,
+//                modifier = Modifier.padding(8.dp).fillMaxWidth(),
+//                style = MaterialTheme.typography.bodyLarge,
+//                fontWeight = FontWeight.Bold,
+//            )
+//        }
+//    }
+//}
+//
+//@Composable
+//fun Welcome(modifier: Modifier = Modifier) {
+//    Row(
+//        modifier = Modifier.padding(16.dp),
+//        verticalAlignment = Alignment.CenterVertically
+//    ) {
+//        Text(
+//            text = "Welcome back, \n Paulo Ricardo!",
+//            style = MaterialTheme.typography.headlineLarge,
+//            modifier = Modifier.weight(1f)
+//        )
+//        Icon(
+//            imageVector = Icons.Filled.Delete,
+//            contentDescription = "Clear Transactions",
+//            tint = MaterialTheme.colorScheme.primary
+//        )
+//    }
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun GreetingPreview() {
+//    Aula1Theme {
+//        Column {
+//            Welcome()
+//            Transactions()
+//        }
+//    }
+//}
